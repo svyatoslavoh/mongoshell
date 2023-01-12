@@ -2,7 +2,8 @@
 
 ### Оглавление
 1. [Основы](#introduction)
-
+1. [Select](#select)
+2. 
 ### Основы <a name="introduction"></a>
 
 **MongoDB** — документоориентированная NoSQL-СУБД. Это значит, что данные в ней хранятся в виде документов.
@@ -13,3 +14,40 @@
 
 Документы приходят в коллекциях — наборах похожих документов. База данных, в свою очередь, может содержать большое количество коллекций.
 В MongoDB используется стандарт BSON — сокращённо от Binary JSON
+
+
+### Select <a name="select"></a>
+
+```
+db.orders.find({});          # select * from db.orders
+db.orders.find({}).count();  # select count() from db.orders 
+```
+
+##### Фильтр с AND и OR
+
+
+```
+db.orders.find({"payment": 2880, "user_id": 21})  # Эквивалентно с and или см ниже
+
+db.orders.find({$and: [{"payment": 2880}, {"user_id": 21}]}) 
+db.orders.find({$or: [{"payment": 2880}, {"user_id": 21}]}) 
+
+```
+##### Фильтр с < и >
+
+- **$gt** (от greater *than* — «больше чем»)
+- **$lt** (от less *than* — «меньше чем»)
+
+```
+db.orders.find({
+    $and: [
+        {
+            "date": { $gt: ISODate("2022-07-01") },
+        },
+        {
+            "date": { $lt: ISODate("2022-08-01") },
+        },
+    ],
+}); 
+```
+
